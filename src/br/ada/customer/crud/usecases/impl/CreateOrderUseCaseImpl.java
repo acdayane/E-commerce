@@ -26,7 +26,7 @@ public class CreateOrderUseCaseImpl implements ICreateOrderUseCase {
         validCustomer(customer);
         Order order = new Order();
         order.setCustomer(customer);
-        order.setItems(new ArrayList<>());
+        order.setItems(new ArrayList<>()); //cria o carrinho
         order.setStatus(OrderStatus.OPEN);
         order.setShippingAddress("Minha casa sempre");
         order.setOrderedAt(LocalDateTime.now());

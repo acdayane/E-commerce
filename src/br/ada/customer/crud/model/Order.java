@@ -3,14 +3,14 @@ package br.ada.customer.crud.model;
 import java.time.LocalDateTime;
 import java.util.List;
 
-public class Order {
+public class Order implements Comparable<Order> {
 
     private Long id;
     private Customer customer;
     private List<OrderItem> items;
     private LocalDateTime orderedAt;
     private OrderStatus status;
-    private String shippingAddress;
+    private String shippingAddress;    
 
     public Long getId() {
         return id;
@@ -58,5 +58,10 @@ public class Order {
 
     public void setShippingAddress(String shippingAddress) {
         this.shippingAddress = shippingAddress;
+    }
+
+    @Override
+    public int compareTo(Order o) {
+        return this.id.compareTo(o.id);
     }
 }

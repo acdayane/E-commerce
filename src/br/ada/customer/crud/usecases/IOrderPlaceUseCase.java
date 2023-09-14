@@ -11,6 +11,9 @@ public interface IOrderPlaceUseCase {
      * 4 - Notificar o cliente que esta aguardando o pagamento
      * 5 - Pedido deve passar a ter o status igual OrderStatus.PENDING_PAYMENT
      */
+
+    
+
     void placeOrder(Order order);
 
 }
