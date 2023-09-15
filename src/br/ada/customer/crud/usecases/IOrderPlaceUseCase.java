@@ -13,7 +13,6 @@ public interface IOrderPlaceUseCase {
      */
 
     
-
     void placeOrder(Order order);
 
 }
