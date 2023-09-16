@@ -62,17 +62,17 @@ public class OrderItemUseCaseImpl implements IOrderItemUseCase {
         }
 
         for (OrderItem item : orderItemList) {
+            
             if (item.getId().equals(product.getId())) {
+
                 item.setAmount(amount);
 
                 orderRepository.update(order);
                 orderNotifier.updated(order);
 
                 changeAmoItem = item;
-            } else {
-                throw new RuntimeException("Produto não está no carrinho");
             }
-        }    
+        }  
        
         return changeAmoItem;
     }
