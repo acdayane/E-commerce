@@ -1,6 +1,7 @@
 package br.ada.customer.crud.usecases.impl;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 import br.ada.customer.crud.model.Order;
 import br.ada.customer.crud.model.OrderItem;
@@ -19,6 +20,7 @@ public class OrderItemUseCaseImpl implements IOrderItemUseCase {
         this.orderRepository = repository;
         this.orderNotifier = notifier;
     }
+
      /*
      * 1 - Pedido precisa estar com status == OrderStatus.OPEN
      * 2 - Lembrar de atualizar o banco através do repository
@@ -52,20 +54,27 @@ public class OrderItemUseCaseImpl implements IOrderItemUseCase {
      */
     @Override
     public OrderItem changeAmount(Order order, Product product, Integer amount) {
+        List<OrderItem> orderItemList = order.getItems();
+        OrderItem changeAmoItem = null;
 
-        OrderItem changeAmouItem = new OrderItem();
-      
         if (order.getStatus() != OrderStatus.OPEN) {
             throw new RuntimeException("Pedido não está aberto");
         }
 
-        for (OrderItem item : order.getItems()) {
-            if (item.equals(product)) {
-                
-            }
-        }
+        for (OrderItem item : orderItemList) {
+            if (item.getId().equals(product.getId())) {
+                item.setAmount(amount);
 
-        return changeAmouItem;
+                orderRepository.update(order);
+                orderNotifier.updated(order);
+
+                changeAmoItem = item;
+            } else {
+                throw new RuntimeException("Produto não está no carrinho");
+            }
+        }    
+       
+        return changeAmoItem;
     }
 
     
