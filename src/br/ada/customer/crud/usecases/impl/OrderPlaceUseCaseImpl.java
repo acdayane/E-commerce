@@ -5,16 +5,16 @@ import java.math.BigDecimal;
 import br.ada.customer.crud.model.Order;
 import br.ada.customer.crud.model.OrderItem;
 import br.ada.customer.crud.model.OrderStatus;
-import br.ada.customer.crud.usecases.INotifierUserCase;
+import br.ada.customer.crud.usecases.INotifierOrderUseCase;
 import br.ada.customer.crud.usecases.IOrderPlaceUseCase;
 import br.ada.customer.crud.usecases.repository.OrderRepository;
 
 public class OrderPlaceUseCaseImpl implements IOrderPlaceUseCase {
 
     private OrderRepository orderRepository;
-    private INotifierUserCase<Order> orderNotifier;
+    private INotifierOrderUseCase orderNotifier;
 
-    public void OrderItemUseCaseImpl(OrderRepository repository, INotifierUserCase<Order> notifier) {
+    public OrderPlaceUseCaseImpl(OrderRepository repository, INotifierOrderUseCase notifier) {
         this.orderRepository = repository;
         this.orderNotifier = notifier;
     }
@@ -38,10 +38,12 @@ public class OrderPlaceUseCaseImpl implements IOrderPlaceUseCase {
         if (sum.compareTo(BigDecimal.ZERO) <= 0) {
             throw new RuntimeException("Soma dos produtos igual ou menor que 0");
         }
-
+        
         order.setStatus(OrderStatus.PENDING_PAYMENT);
 
-        orderNotifier.registered(order);
+        orderRepository.update(order);
+
+        orderNotifier.pendingPayment(order);
     }
     
 }

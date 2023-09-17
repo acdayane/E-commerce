@@ -8,18 +8,15 @@ import br.ada.customer.crud.model.Order;
 import br.ada.customer.crud.model.OrderItem;
 import br.ada.customer.crud.model.OrderStatus;
 import br.ada.customer.crud.model.Product;
-import br.ada.customer.crud.usecases.INotifierUserCase;
 import br.ada.customer.crud.usecases.IOrderItemUseCase;
 import br.ada.customer.crud.usecases.repository.OrderRepository;
 
 public class OrderItemUseCaseImpl implements IOrderItemUseCase {
 
-    private OrderRepository orderRepository;
-    private INotifierUserCase<Order> orderNotifier;
+    private OrderRepository repository;
 
-    public OrderItemUseCaseImpl(OrderRepository repository, INotifierUserCase<Order> notifier) {
-        this.orderRepository = repository;
-        this.orderNotifier = notifier;
+    public OrderItemUseCaseImpl(OrderRepository repository) {
+        this.repository = repository;
     }
 
      /*
@@ -44,11 +41,9 @@ public class OrderItemUseCaseImpl implements IOrderItemUseCase {
 
         order.getItems().add(newOrderItem);        
 
-        orderRepository.update(order);
-        orderNotifier.registered(order);
+        repository.update(order);
 
-        return newOrderItem;
-        
+        return newOrderItem;        
     }
 
      /*
@@ -69,8 +64,7 @@ public class OrderItemUseCaseImpl implements IOrderItemUseCase {
 
                 item.setAmount(amount);
 
-                orderRepository.update(order);
-                orderNotifier.updated(order);
+                repository.update(order);
 
                 changeAmoItem = item;
             }
@@ -102,8 +96,6 @@ public class OrderItemUseCaseImpl implements IOrderItemUseCase {
 
         order.setItems(updatedItemList);
         
-        orderRepository.update(order);
-        orderNotifier.updated(order);;
-       
+        repository.update(order);       
     }
 }

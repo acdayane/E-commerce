@@ -2,21 +2,18 @@ package br.ada.customer.crud.usecases.impl;
 
 import br.ada.customer.crud.model.Order;
 import br.ada.customer.crud.model.OrderStatus;
+import br.ada.customer.crud.usecases.INotifierOrderUseCase;
 import br.ada.customer.crud.usecases.IOrderShippingUseCase;
-import br.ada.customer.crud.usecases.IShippingNotifierUseCase;
 import br.ada.customer.crud.usecases.repository.OrderRepository;
 
 public class OrderShippingUseCaseImpl implements IOrderShippingUseCase {
 
     private OrderRepository orderRepository;
-    private IShippingNotifierUseCase notifierUseCase;
+    private INotifierOrderUseCase orderNotifier;
 
-    public OrderShippingUseCaseImpl(
-            OrderRepository orderRepository,
-            IShippingNotifierUseCase notifierUseCase
-    ) {
-        this.orderRepository = orderRepository;
-        this.notifierUseCase = notifierUseCase;
+    public OrderShippingUseCaseImpl(OrderRepository repository, INotifierOrderUseCase notifier) {
+        this.orderRepository = repository;
+        this.orderNotifier = notifier;
     }
 
     @Override
@@ -24,9 +21,12 @@ public class OrderShippingUseCaseImpl implements IOrderShippingUseCase {
         if (order.getStatus() != OrderStatus.PAID) {
             throw new RuntimeException("Pedido ainda não pago.");
         }
+
         order.setStatus(OrderStatus.FINISH);
-        orderRepository.save(order);
-        notifierUseCase.notify(order);
+
+        orderRepository.update(order);
+        
+        orderNotifier.shipping(order);
     }
 
 }

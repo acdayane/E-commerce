@@ -9,6 +9,7 @@ import br.ada.customer.crud.model.Product;
 import br.ada.customer.crud.usecases.*;
 
 import java.math.BigDecimal;
+import java.util.Collections;
 
 public class ExampleOrderMain {
 
@@ -22,7 +23,8 @@ public class ExampleOrderMain {
         IOrderShippingUseCase orderShipping = OrderFactory.shippingUseCase();
 
         Customer customer = new Customer();
-        customer.setName("William");
+        customer.setName("Dayane");
+        customer.setEmail(Collections.singletonList("day@oi.com"));
         customerUseCase.create(customer);
 
         Product productOne = new Product();

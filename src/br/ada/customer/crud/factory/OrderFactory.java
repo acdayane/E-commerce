@@ -7,8 +7,10 @@ import br.ada.customer.crud.integration.memoryrepository.OrderEntityMerge;
 import br.ada.customer.crud.integration.memoryrepository.OrderMemoryRepositoryImpl;
 import br.ada.customer.crud.usecases.*;
 import br.ada.customer.crud.usecases.impl.CreateOrderUseCaseImpl;
+import br.ada.customer.crud.usecases.impl.OrderItemUseCaseImpl;
 import br.ada.customer.crud.usecases.impl.OrderPayUseCaseImpl;
 import br.ada.customer.crud.usecases.impl.OrderPlaceUseCaseImpl;
+import br.ada.customer.crud.usecases.impl.OrderShippingUseCaseImpl;
 import br.ada.customer.crud.usecases.repository.OrderRepository;
 
 public class OrderFactory {
@@ -21,11 +23,11 @@ public class OrderFactory {
     }
 
     public static IOrderItemUseCase orderItemUseCase() {
-        return null;
+        return new OrderItemUseCaseImpl(createRepository());
     }
 
     public static IOrderPlaceUseCase placeOrderUseCase() {
-        return new OrderPlaceUseCaseImpl();
+        return new OrderPlaceUseCaseImpl(createRepository(), createNotifier());
     }
 
     public static IOrderPayUseCase payOrderUseCase() {
@@ -36,7 +38,7 @@ public class OrderFactory {
     }
 
     public static IOrderShippingUseCase shippingUseCase() {
-        return null;
+        return new OrderShippingUseCaseImpl (createRepository(), createNotifier());
     }
 
     public static OrderRepository createRepository() {
@@ -44,5 +46,9 @@ public class OrderFactory {
                 MemoryDatabase.getInstance(),
                 new OrderEntityMerge(MemoryDatabase.getInstance())
         );
+    }
+
+    private static INotifierOrderUseCase createNotifier() {
+        return new OrderEmailNotifierImpl(new SendEmail());
     }
 }

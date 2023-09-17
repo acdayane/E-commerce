@@ -1,9 +1,9 @@
 package br.ada.customer.crud.integration.email;
 
 import br.ada.customer.crud.model.Order;
-import br.ada.customer.crud.usecases.INotifierPaymentUseCase;
+import br.ada.customer.crud.usecases.INotifierOrderUseCase;
 
-public class OrderEmailNotifierImpl implements INotifierPaymentUseCase {
+public class OrderEmailNotifierImpl implements INotifierOrderUseCase {
 
     private SendEmail sendEmail;
 
@@ -12,8 +12,18 @@ public class OrderEmailNotifierImpl implements INotifierPaymentUseCase {
     }
 
     @Override
-    public void notify(Order order) {
+    public void pendingPayment(Order order) {
+        sendEmail.send("comunicado@ada.com.br", order.getCustomer().getEmail(), "Estamos aguardando o pagamento do pedido");
+    } 
+
+    @Override
+    public void notifyPayment(Order order) {
         sendEmail.send("comunicado@ada.com.br", order.getCustomer().getEmail(), "Uhul! Recebemos o pagamento!");
     }
+
+    @Override
+    public void shipping(Order order) {
+        sendEmail.send("comunicado@ada.com.br", order.getCustomer().getEmail(), "Temos novidades! Seu pedido foi enviado!");
+    } 
     
 }
