@@ -25,22 +25,25 @@ public class OrderItemUseCaseImpl implements IOrderItemUseCase {
      * 1 - Pedido precisa estar com status == OrderStatus.OPEN
      * 2 - Lembrar de atualizar o banco através do repository
      */
-    @Override
-    public OrderItem addItem(Order order, Product product, BigDecimal price, Integer amount) {
-
-        OrderItem newOrderItem = new OrderItem();
-                
+    private void checkOrderStatus(Order order) {
         if (order.getStatus() != OrderStatus.OPEN) {
             throw new RuntimeException("Pedido não está aberto");
         }
+    }
 
+    @Override
+    public OrderItem addItem(Order order, Product product, BigDecimal price, Integer amount) {
+        OrderItem newOrderItem = new OrderItem();
+
+        checkOrderStatus(order);        
+        
         newOrderItem.setProduct(product);
         newOrderItem.setSaleValue(price);
         newOrderItem.setAmount(amount);
 
         order.getItems().add(newOrderItem);        
 
-        orderRepository.save(order);
+        orderRepository.update(order);
         orderNotifier.registered(order);
 
         return newOrderItem;
@@ -57,9 +60,7 @@ public class OrderItemUseCaseImpl implements IOrderItemUseCase {
         List<OrderItem> orderItemList = order.getItems();
         OrderItem changeAmoItem = null;
 
-        if (order.getStatus() != OrderStatus.OPEN) {
-            throw new RuntimeException("Pedido não está aberto");
-        }
+        checkOrderStatus(order);
 
         for (OrderItem item : orderItemList) {
             
@@ -84,6 +85,8 @@ public class OrderItemUseCaseImpl implements IOrderItemUseCase {
      */
     @Override
     public void removeItem(Order order, Product product) {
+
+        
        
     }
     

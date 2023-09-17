@@ -5,9 +5,19 @@ import java.math.BigDecimal;
 import br.ada.customer.crud.model.Order;
 import br.ada.customer.crud.model.OrderItem;
 import br.ada.customer.crud.model.OrderStatus;
+import br.ada.customer.crud.usecases.INotifierUserCase;
 import br.ada.customer.crud.usecases.IOrderPlaceUseCase;
+import br.ada.customer.crud.usecases.repository.OrderRepository;
 
 public class OrderPlaceUseCaseImpl implements IOrderPlaceUseCase {
+
+    private OrderRepository orderRepository;
+    private INotifierUserCase<Order> orderNotifier;
+
+    public void OrderItemUseCaseImpl(OrderRepository repository, INotifierUserCase<Order> notifier) {
+        this.orderRepository = repository;
+        this.orderNotifier = notifier;
+    }
 
     @Override
     public void placeOrder(Order order) {
@@ -30,6 +40,8 @@ public class OrderPlaceUseCaseImpl implements IOrderPlaceUseCase {
         }
 
         order.setStatus(OrderStatus.PENDING_PAYMENT);
+
+        orderNotifier.registered(order);
     }
     
 }
