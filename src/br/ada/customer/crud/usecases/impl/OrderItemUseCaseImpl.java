@@ -1,6 +1,7 @@
 package br.ada.customer.crud.usecases.impl;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 import br.ada.customer.crud.model.Order;
@@ -85,9 +86,24 @@ public class OrderItemUseCaseImpl implements IOrderItemUseCase {
      */
     @Override
     public void removeItem(Order order, Product product) {
-
+        List<OrderItem> orderItemList = order.getItems();
+        List<OrderItem> updatedItemList = new ArrayList<>();
         
+        checkOrderStatus(order);
+
+        for (OrderItem item : orderItemList) {
+            
+            if (!item.getProduct().equals(product)) {
+
+                updatedItemList.add(item);             
+
+            } 
+        }        
+
+        order.setItems(updatedItemList);
+        
+        orderRepository.update(order);
+        orderNotifier.updated(order);;
        
     }
-    
 }
