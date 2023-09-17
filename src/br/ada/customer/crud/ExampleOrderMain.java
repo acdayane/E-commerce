@@ -25,6 +25,8 @@ public class ExampleOrderMain {
         Customer customer = new Customer();
         customer.setName("Dayane");
         customer.setEmail(Collections.singletonList("day@oi.com"));
+        customer.setDocument("08000808072");
+        customer.setTelephone(Collections.singletonList("+5535984849345"));
         customerUseCase.create(customer);
 
         Product productOne = new Product();

@@ -69,7 +69,6 @@ public class OrderItemUseCaseImpl implements IOrderItemUseCase {
                 changeAmoItem = item;
             }
         }  
-       
         return changeAmoItem;
     }
 
@@ -95,7 +94,6 @@ public class OrderItemUseCaseImpl implements IOrderItemUseCase {
         }        
 
         order.setItems(updatedItemList);
-        
         repository.update(order);       
     }
 }

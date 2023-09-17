@@ -9,15 +9,13 @@ import br.ada.customer.crud.usecases.repository.OrderRepository;
 public class OrderPayUseCaseImpl implements IOrderPayUseCase {
 
     private OrderRepository orderRepository;
-    private INotifierOrderUseCase paymentNotifier;
-    
+    private INotifierOrderUseCase notifierEmail;
+    private INotifierOrderUseCase notifierSms;
 
-    public OrderPayUseCaseImpl(
-        OrderRepository repository,
-        INotifierOrderUseCase notifier
-    ) {
+    public OrderPayUseCaseImpl(OrderRepository repository, INotifierOrderUseCase notifierEmail, INotifierOrderUseCase notifierSms) {
         this.orderRepository = repository;
-        this.paymentNotifier = notifier;
+        this.notifierEmail = notifierEmail;
+        this.notifierSms = notifierSms;
     }
 
      /*
@@ -34,7 +32,8 @@ public class OrderPayUseCaseImpl implements IOrderPayUseCase {
 
         orderRepository.update(order);
 
-        paymentNotifier.notifyPayment(order);
+        notifierEmail.notifyPayment(order);
+        notifierSms.notifyPayment(order);
     }
 
     private void checkOrderStatus(Order order) {

@@ -5,6 +5,8 @@ import br.ada.customer.crud.integration.email.OrderEmailNotifierImpl;
 import br.ada.customer.crud.integration.email.SendEmail;
 import br.ada.customer.crud.integration.memoryrepository.OrderEntityMerge;
 import br.ada.customer.crud.integration.memoryrepository.OrderMemoryRepositoryImpl;
+import br.ada.customer.crud.integration.sms.OrderSmsNotifierImpl;
+import br.ada.customer.crud.integration.sms.SendSms;
 import br.ada.customer.crud.usecases.*;
 import br.ada.customer.crud.usecases.impl.CreateOrderUseCaseImpl;
 import br.ada.customer.crud.usecases.impl.OrderItemUseCaseImpl;
@@ -27,18 +29,27 @@ public class OrderFactory {
     }
 
     public static IOrderPlaceUseCase placeOrderUseCase() {
-        return new OrderPlaceUseCaseImpl(createRepository(), createNotifier());
+        return new OrderPlaceUseCaseImpl(
+                createRepository(),
+                createEmailNotifier(),
+                createSmsNotifier()
+        );
     }
 
     public static IOrderPayUseCase payOrderUseCase() {
         return new OrderPayUseCaseImpl(
                 createRepository(),
-                new OrderEmailNotifierImpl(new SendEmail())
+                createEmailNotifier(),
+                createSmsNotifier()
         );
     }
 
     public static IOrderShippingUseCase shippingUseCase() {
-        return new OrderShippingUseCaseImpl (createRepository(), createNotifier());
+        return new OrderShippingUseCaseImpl (
+                createRepository(),
+                createEmailNotifier(),
+                createSmsNotifier()
+        );
     }
 
     public static OrderRepository createRepository() {
@@ -48,7 +59,15 @@ public class OrderFactory {
         );
     }
 
-    private static INotifierOrderUseCase createNotifier() {
-        return new OrderEmailNotifierImpl(new SendEmail());
+    private static INotifierOrderUseCase createEmailNotifier() {
+        return new OrderEmailNotifierImpl(
+            new SendEmail()
+        );
+    }
+
+    private static INotifierOrderUseCase createSmsNotifier() {
+        return new OrderSmsNotifierImpl(
+            new SendSms()
+        );
     }
 }

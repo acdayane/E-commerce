@@ -9,11 +9,13 @@ import br.ada.customer.crud.usecases.repository.OrderRepository;
 public class OrderShippingUseCaseImpl implements IOrderShippingUseCase {
 
     private OrderRepository orderRepository;
-    private INotifierOrderUseCase orderNotifier;
+    private INotifierOrderUseCase notifierEmail;
+    private INotifierOrderUseCase notifierSms;
 
-    public OrderShippingUseCaseImpl(OrderRepository repository, INotifierOrderUseCase notifier) {
+    public OrderShippingUseCaseImpl(OrderRepository repository, INotifierOrderUseCase notifierEmail, INotifierOrderUseCase notifierSms) {
         this.orderRepository = repository;
-        this.orderNotifier = notifier;
+        this.notifierEmail = notifierEmail;
+        this.notifierSms = notifierSms;
     }
 
     @Override
@@ -24,7 +26,8 @@ public class OrderShippingUseCaseImpl implements IOrderShippingUseCase {
 
         orderRepository.update(order);
         
-        orderNotifier.shipping(order);
+        notifierEmail.shipping(order);
+        notifierSms.shipping(order);
     }
 
     private void checkOrderStatus(Order order) {

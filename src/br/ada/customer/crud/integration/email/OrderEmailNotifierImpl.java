@@ -13,17 +13,20 @@ public class OrderEmailNotifierImpl implements INotifierOrderUseCase {
 
     @Override
     public void pendingPayment(Order order) {
-        sendEmail.send("comunicado@ada.com.br", order.getCustomer().getEmail(), "Estamos aguardando o pagamento do pedido");
+        System.out.println();
+        sendEmail.send("comunicado@ada.com.br", order.getCustomer().getEmail(), "Estamos aguardando o pagamento do pedido " + order.getId());
     } 
 
     @Override
     public void notifyPayment(Order order) {
-        sendEmail.send("comunicado@ada.com.br", order.getCustomer().getEmail(), "Uhul! Recebemos o pagamento!");
+        System.out.println();
+        sendEmail.send("comunicado@ada.com.br", order.getCustomer().getEmail(), "Uhull! Recebemos o pagamento do pedido " + order.getId());
     }
 
     @Override
     public void shipping(Order order) {
-        sendEmail.send("comunicado@ada.com.br", order.getCustomer().getEmail(), "Temos novidades! Seu pedido foi enviado!");
+        System.out.println();
+        sendEmail.send("comunicado@ada.com.br", order.getCustomer().getEmail(), "Obaaa! Seu pedido " + order.getId() + " foi enviado!");
     } 
     
 }

@@ -13,7 +13,8 @@ public class CustomerSmsNotifierImpl implements INotifierUserCase<Customer> {
 
     @Override
     public void registered(Customer customer) {
-        sendSms.send("1111111111111", customer.getTelephone(), "Bem vindo. Click no link abaixo para confirmar seu cadastro.");
+        sendSms.send("1111111111111", customer.getTelephone(), "Bem-vindo. Click no link abaixo para confirmar seu cadastro.");
+        System.out.println();
     }
 
     @Override
