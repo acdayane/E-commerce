@@ -39,7 +39,7 @@ public class OrderPayUseCaseImpl implements IOrderPayUseCase {
 
     private void checkOrderStatus(Order order) {
         if (order.getStatus() != OrderStatus.PENDING_PAYMENT) {
-            throw new RuntimeException("Pedido não está aberto");
+            throw new RuntimeException("Pedido não está com pagamento pendente");
         }
     }
     

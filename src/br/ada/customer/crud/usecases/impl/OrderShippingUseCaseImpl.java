@@ -18,15 +18,19 @@ public class OrderShippingUseCaseImpl implements IOrderShippingUseCase {
 
     @Override
     public void shipping(Order order) {
-        if (order.getStatus() != OrderStatus.PAID) {
-            throw new RuntimeException("Pedido ainda não pago.");
-        }
+        checkOrderStatus(order);
 
         order.setStatus(OrderStatus.FINISH);
 
         orderRepository.update(order);
         
         orderNotifier.shipping(order);
+    }
+
+    private void checkOrderStatus(Order order) {
+        if (order.getStatus() != OrderStatus.PAID) {
+            throw new RuntimeException("Pedido ainda não pago.");
+        }
     }
 
 }
