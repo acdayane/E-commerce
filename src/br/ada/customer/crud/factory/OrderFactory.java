@@ -1,10 +1,14 @@
 package br.ada.customer.crud.factory;
 
 import br.ada.customer.crud.integration.database.MemoryDatabase;
+import br.ada.customer.crud.integration.email.OrderEmailNotifierImpl;
+import br.ada.customer.crud.integration.email.SendEmail;
 import br.ada.customer.crud.integration.memoryrepository.OrderEntityMerge;
 import br.ada.customer.crud.integration.memoryrepository.OrderMemoryRepositoryImpl;
 import br.ada.customer.crud.usecases.*;
 import br.ada.customer.crud.usecases.impl.CreateOrderUseCaseImpl;
+import br.ada.customer.crud.usecases.impl.OrderPayUseCaseImpl;
+import br.ada.customer.crud.usecases.impl.OrderPlaceUseCaseImpl;
 import br.ada.customer.crud.usecases.repository.OrderRepository;
 
 public class OrderFactory {
@@ -21,11 +25,14 @@ public class OrderFactory {
     }
 
     public static IOrderPlaceUseCase placeOrderUseCase() {
-        return null;
+        return new OrderPlaceUseCaseImpl();
     }
 
     public static IOrderPayUseCase payOrderUseCase() {
-        return null;
+        return new OrderPayUseCaseImpl(
+                createRepository(),
+                new OrderEmailNotifierImpl(new SendEmail())
+        );
     }
 
     public static IOrderShippingUseCase shippingUseCase() {

@@ -64,7 +64,7 @@ public class OrderItemUseCaseImpl implements IOrderItemUseCase {
 
         for (OrderItem item : orderItemList) {
             
-            if (item.getId().equals(product.getId())) {
+            if (item.getProduct().getId().equals(product.getId())) {
 
                 item.setAmount(amount);
 
